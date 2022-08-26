@@ -1,0 +1,1 @@
+console.log("este es el objeto global: " + this);

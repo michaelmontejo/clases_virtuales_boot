@@ -1,0 +1,132 @@
+MongoDB 🆚 SQL:
+
+  💃 MongoDB tiene mucha flexibilidad y no nos impone seguir una estructura o esquema bien 
+     definido.
+  🙅 SQL nos impone una estructura bien definida a más no poder; es super no-flexible.
+  🍻 Con MongoDB es más fácil empezar y añadir nuevas funcionalidades.
+  ⏲ Con SQL es más demorado de empezar porque debemos tener el orden super claro siempre. Todos 
+     los elementos deben tener los mismos elementos y todos deben ser del mismo tipo. Si queremos 
+     agregar un nuevo campo debemos añadirlo en todas partes con un valor pode defecto, aunque no 
+     lo necesitemos.
+  🤒 Si no seguimos buenas prácticas en MongoDB, vamos a necesitar queries ultra-complejas, 
+     demoradas y una visita diaria al psicólogo 😱.
+  💆 El orden impuesto de SQL no es por nada. Las queries son fáciles de entender porque todo 
+     sigue su orden y tranquilidad. Aunque, implementar nuevas features toma su buen tiempo 🤔.
+
+🏅 Para mi el ganador es MongoDB siempre y cuando sigamos buenas prácticas desde el principio. 
+   Un gran poder conlleva a una gran responsabilidad 💪🎉.
+
+RELACIONES ENTRE DOCUMENTOS
+Cuando la relación de los campos de los datos es uno a uno, lo que se recomienda es trabajar con 
+documentos embebidos (Mongo permite meter documentos dentro de otros documentos).
+Cuando la relación es uno a muchos se recomienda hacer un arreglo de documentos y relacionar dicho
+arreglo con el campo requerido con muchos datos, por ejemplo si un usuario tiene varios domicilios
+y cuenta con varias direcciones. Aunque si la colección crece mucho y posteriormente se hacer 
+compleja la obtención de datos, lo mejor es relacionar los datos en un arreglo por medio de _id,
+por ejemplo si una editorial maneja una base de datos de los libros que distribuye, con el tiempo
+esa colección se va a hacer muy extensa y sería muy poco práctico embeber dicho documento dentro
+de otro. Las operaciones dentro de mongo no son transaccionales, lo que quiere decir.
+
+Entonces lo mejor, es que si se sabe que la información no va a cambiar mucho, dejar los documentos
+embebidos todo en una sola colección, pero si la información va a cambiar mucho, lo mejor es usar 
+referencias.
+
+OPERADORES
+Se usan cuando queremos hacer busquedas compuestas por filtros elaborados, no unicamente de igualdad
+
+  Operadores de comparación
+$eq     =
+$gt      >
+$gte   >=
+$lt       <
+$lte    <=
+$ne    !=
+$in     valores dentro de un rango
+$nin    valores que no estan dentro de un rango
+
+  Operadores lógicos
+$and   Une queries con un AND logico
+$not   Invierte el efecto de un query
+$nor   Une queries con un NOR logico
+$or      Une queries con un OR logico
+
+  Operadores por elemento
+$exist     Docuemntos que cuentan con un campo especifico
+$type     Docuemntos que cuentan con un campo de un tipo especifico
+
+  Operadores para arreglos
+$all          Arreglos que contengan todos los elementos del query
+$elemMatch    Documentos que cumplen la condicion del $elemMatch en uno de sus elementos
+$size    Documentos que contienen un campo tipo arreglo de un tamaño especifico.
+
+PROYECCIONES
+A veces en nuestras consultas no queremos traer toda la información de un documento sino
+porciones muy concretas de información de la siguiente forma:
+
+db.[nombreColección].findOne{{[Criterio de búsqueda]}, {item: 1, status: 1}}
+
+Entre corchetes se pone el criterio de búsqueda, luego una com y luego entre corchetes cuadrados
+se le especifica que valores se quieren traer, en el caso del ejemplo item y status y los valores
+que necesitemos.
+
+
+
+  -----Usando operadores para realizar Updates en arreglos -----
+Para realizar las relaciones entre carreras y cursos empleamos los operadores $addToSet y $pull estos operadores sirven 
+para agregar $addToSet o retirar $pulldocumentos de un arreglo dependiendo del filtro que aplicamos.
+
+Así cuando ejecutamos db.carreras.update_one({'_id': ObjectId(json['id_carrera'])}, {'$addToSet': {'cursos': curso}}) 
+$addToSet lo que hace es agregar el objeto curso al arreglo cursos, si el arreglo cursos no existe lo crea.
+
+Para retirar un curso de una carrera usamos $pull de la siguiente manera 
+db.carreras.update_one({'_id': ObjectId(json['id_carrera'])}, {'$pull': {'cursos': {'_id': ObjectId(json['id_curso'])}}}) 
+aquí $pull recibe un filtro y todos los elementos del arreglo cursos que cumplan con ese filtro serán borrados.
+
+skip() y limit()
+
+Si tenemos una consulta que retorna 100 documentos pero solamente necesitamos los documentos del número 20 al 30, la manera 
+de hacerlo es usando skip() y limit().
+
+Si tenemos 100 carreras y solamente queremos las primeras 10 podemos ejecutar db.carreras.find({}).limit(10) esta nos 
+traerá las primeras 10 carreras.
+
+Ahora si queremos las carreras ubicadas en los puestos 40 y 50 lo que debemos hacer es 
+db.carreras.find({}).skip(40).limit(10)
+
+Como vemos skip() y limit() son muy útiles para realizar paginaciones, cuando tenemos consultas que retornan muchos 
+documentos y que en algunos casos la totalidad de los documentos no es utilizada es buena práctica limitar el número de 
+documentos que hacemos viajar entre nuestro cluster de base de datos y el código de nuestra aplicación. Esto puede ayudar a 
+mejorar la velocidad con que las consultas son procesadas por la aplicación.
+
+  AGREGACIONES
+Agregaciones comunes
+{ $match: {} }
+{ $group: {} }
+
+MapReduce
+db.orders.mapReduce(
+  function() { emit( this.cust_id, this.amount ); }, -> Map
+  function(key, values) { return Array.sum(values) },-> Reduce
+  {
+    query: { 'status': 'A' }, -> Query
+    out: 'order_totals' -> output
+  }
+)
+
+Agregaciones de unico proposito:
+count()
+estimatedDocumentCount()
+disctinct()
+
+ÍNDICES
+Los índices ayudan a que las consultas sean más rápidas. Sin 
+índices, Mongo debe hacer un escaneo en toda la colección. Hay
+varios tipos de índices:
+- De un solo campo
+- Compuestos
+- Multi llave
+- Geo espaciales
+- De texto
+- Hashed
+
+ db.[Colección].createIndex({[nombre]: "[texto]" })

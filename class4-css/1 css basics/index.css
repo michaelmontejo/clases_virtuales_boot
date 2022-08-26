@@ -1,0 +1,16 @@
+#container-1{
+	display: inline;
+	background-color: blue;
+}
+#container-2{
+	display: inline;
+	background-color: red;
+}
+#container-3{
+	display: block;
+	background-color: green;
+}
+#container-4{
+	display: block;
+	background-color: cyan;
+}

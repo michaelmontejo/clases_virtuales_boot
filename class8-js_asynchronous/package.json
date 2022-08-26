@@ -1,0 +1,19 @@
+{
+  "name": "js-asynchronous",
+  "version": "0.0.1",
+  "description": "explanation of js asynchronous",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "async",
+    "await",
+    "promises"
+  ],
+  "author": "Juan Duque",
+  "license": "MIT",
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
+  }
+}

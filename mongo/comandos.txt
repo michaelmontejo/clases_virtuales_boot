@@ -1,0 +1,67 @@
+
+QUE SON LAS COLECCIONES:
+- Agrupaciones de documentos.
+- Equivalentes a una tabla en una db relacional
+- No impone un esquema
+
+QUE SON LOS DOCUMENTOS:
+- Un registro dentro de una colección
+- Es análogo a un objeto JSON (BSON)
+- La unidad básica dentro de mongodb
+
+INSTALAR MONGODB EN LINUX:
+- sudo apt update
+- sudo apt install -y mongodb
+
+Al insertar un documento en un colección se debe poner el atributo _id, que si no lo especificamos 
+nosotro, mongodb lo hace automáticamente, pero mongodb exige el uso de dicho atributo. Dicho id no
+puede repetirse.
+
+Cuando se ingresa un documento, mongo retorna una notificación en formato json con la confimación de
+la o las colecciones guardadas y los ids de cada colección así:
+{
+    "acknowledged" : true,
+    "insertedId" : ObjectId("[id]")
+}
+
+Los documentos tienen un límite de tamaño de 16MB
+
+OPERACIONES CRUD EN LA CONSOLA DE MONGO:
+- mongo //Para iniciar la consola
+- show dbs //Mostrar la bases de datos existentes.
+    CREACIONES
+- use [Nombre de la db] //Crea una base de datos
+- db //Muestra la db en la que se está trabajando
+- db.[nombre de la colección].insertOne({json}) //Ingresa un documento a la colección especificada
+- show collections //Muestra las colecciones
+- db.[nombre colección].findOne({filtro}) //Muestra un cualquier documento de la colección
+- db.[nombre coleccion].insertMany([varios JSON]) //Guarda varios documentos a la vez recibiendo un arreglo de
+  documentos
+- db.[nombre colección].help() //Muestra los comandos de las operaciones que se pueden hacer en la colección
+  especificada
+-db.dropDatabase() //Dentro de la db, se ejecuta este comando para borrar la db
+-db.help() //Obtener ayuda
+    
+   nota: nc es de nombre colección, reemplaza nc por el nombre de la colección.
+
+    BUSQUEDAS
+- db.[n.c.].find({filtro}) //Busca en la colección y devuelve el resultado si cumple con el filtro Ej:
+    db.inventario.find({elemento: "canvas"}) 	
+- db.nc.find().pretty() //Embellece las salidas JSON que nos regresa mongo
+- db.nc.find().count() //Regresa el número de elementos que retorna la operación find
+- db.nc.findOne({filtro1, filtro2}) //El operador , se comporta como un operador AND. Ambos filtros
+    deben ser verdaderos para poder ejercer la operación Ej: db.nombre.findOne({nombre: "Juan", 
+    Edad: 15})
+-db.nombre.findOne({nombre: "Juan", Edad: 15}
+
+
+   ACTUALIZACIONES
+- db.nc.updateOne({_id: ObjectId('[id documento]')}, {$set:{[atributo a actualizar]:[valor]}})})
+- db.nc.updateMany({_id: ObjectId('[id documento]')}, {$set:{[atributo a actualizar]:[valor]}})}) Como se puede notar
+  se los argumentos entre updateOne y updateMany son iguales, la diferencia es que updateMany va a actualizar todos
+  los campos que cumplan con lo requeridos.
+
+   BORRAR O REMOVER
+- db.nc.deleteOne( [filtro] )
+- db.nc.deleteMany( [filtro] ) Puede borrar uno o varios documentos que cumplan con el filtro indicado. Hay que tener 
+  mucho cuidado con pasar un filtro vacio porque eso le indica a mongo que se quieren borar todos los documentos

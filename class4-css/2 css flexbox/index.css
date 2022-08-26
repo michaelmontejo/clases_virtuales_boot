@@ -1,0 +1,17 @@
+#main-container{
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+}
+#container-1{
+	background-color: blue;
+}
+#container-2{
+	background-color: red;
+}
+#container-3{
+	background-color: green;
+}
+#container-4{
+	background-color: cyan;
+}

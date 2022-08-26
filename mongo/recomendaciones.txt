@@ -1,0 +1,17 @@
+- Utilizar mongo en una nube, NO de forma local, en un ambiente de
+  alta disponibilidad.
+- Utilizar el cluster de mongoDB Atlas.
+- Guardar las credenciales en variables de entorno o archivos de
+  configuración fuera del proyecto.
+- Asegura que tu cluster se encuentre en la misma región del
+  proveedor que tu aplicación.
+- Has VPC peering entre la VPC de tu aplicación y la VCP de tu cluster.
+  Esto es muy importante porque podemos ver el cluster de mongo como una
+  ip localy así restringir que nadie más pueda acceder a tu bd que no sea
+  tu aplicación.
+- Cuida  la lista de IP'S blancas, siempre especificar desde que IP te vas 
+  a conectar a Atlas.
+- Habilita la autenticación de dos pasos.
+- Actualiza constantemente tu version de mongo.
+- Ten separados tus ambientes dev/test/prod.
+- Habilita la opción de storage encriptado en Atlas
