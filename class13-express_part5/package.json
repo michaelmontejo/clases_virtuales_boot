@@ -1,0 +1,31 @@
+{
+  "name": "book-store",
+  "version": "1.0.0",
+  "description": "This is the api server for a book store app",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "nodemon": "npx nodemon index.js"
+  },
+  "keywords": [
+    "books",
+    "categories",
+    "api-rest"
+  ],
+  "author": "Juan Duque",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "dotenv": "^16.0.2",
+    "express": "^4.18.1",
+    "mongoose": "^6.6.0"
+  },
+  "devDependencies": {
+    "@faker-js/faker": "^7.5.0",
+    "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-prettier": "^4.2.1",
+    "nodemon": "^2.0.19",
+    "prettier": "^2.7.1"
+  }
+}
